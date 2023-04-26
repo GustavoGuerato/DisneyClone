@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -8,12 +9,11 @@ import {
   setUserLoginDetails,
   setSignOutState,
 } from "../features/user/userSlice";
-import { useEffect } from "react";
 
 const Header = (props) => {
   const dispatch = useDispatch();
   const history = useNavigate();
-  const username = useSelector(selectUserName);
+  const userName = useSelector(selectUserName);
   const userPhoto = useSelector(selectUserPhoto);
 
   useEffect(() => {
@@ -23,10 +23,10 @@ const Header = (props) => {
         history.push("/home");
       }
     });
-  }, [username]);
+  }, [userName]);
 
   const handleAuth = () => {
-    if (!username) {
+    if (!userName) {
       auth
         .signInWithPopup(provider)
         .then((result) => {
@@ -35,7 +35,7 @@ const Header = (props) => {
         .catch((error) => {
           alert(error.message);
         });
-    } else if (username) {
+    } else if (userName) {
       auth
         .signOut()
         .then(() => {
@@ -59,13 +59,14 @@ const Header = (props) => {
   return (
     <Nav>
       <Logo>
-        <img src="/images/logo.svg" alt="disney logo" />
+        <img src="/images/logo.svg" alt="Disney+" />
       </Logo>
-      {!username ? (
+
+      {!userName ? (
         <Login onClick={handleAuth}>Login</Login>
       ) : (
         <>
-          <NavMenu>
+                    <NavMenu>
             <a href="/home">
               <img src="/images/home-icon.svg" alt="home" />
               <span>HOME</span>
@@ -92,9 +93,9 @@ const Header = (props) => {
             </a>
           </NavMenu>
           <SignOut>
-            <UserImg src={userPhoto} alt={username} />
+            <UserImg src={userPhoto} alt={userName} />
             <DropDown>
-              <span onclick={handleAuth}>Sign Out</span>
+              <span onClick={handleAuth}>Sign out</span>
             </DropDown>
           </SignOut>
         </>
@@ -125,6 +126,7 @@ const Logo = styled.a`
   max-height: 70px;
   font-size: 0;
   display: inline-block;
+
   img {
     display: block;
     width: 100%;
@@ -190,9 +192,10 @@ const NavMenu = styled.div`
       }
     }
   }
+
   /* @media (max-width: 768px) {
-     display: none;
-   }*/
+    display: none;
+  } */
 `;
 
 const Login = styled.a`
@@ -203,11 +206,11 @@ const Login = styled.a`
   border: 1px solid #f9f9f9;
   border-radius: 4px;
   transition: all 0.2s ease 0s;
+
   &:hover {
     background-color: #f9f9f9;
     color: #000;
     border-color: transparent;
-    cursor: pointer;
   }
 `;
 
@@ -222,7 +225,7 @@ const DropDown = styled.div`
   background: rgb(19, 19, 19);
   border: 1px solid rgba(151, 151, 151, 0.34);
   border-radius: 4px;
-  box-shadow: rgb(0 0 0/50%) 0px 0px 18px;
+  box-shadow: rgb(0 0 0 / 50%) 0px 0px 18px 0px;
   padding: 10px;
   font-size: 14px;
   letter-spacing: 3px;
