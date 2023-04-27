@@ -12,7 +12,7 @@ import {
 
 const Header = (props) => {
   const dispatch = useDispatch();
-  const history = useNavigate();
+  const navigate = useNavigate();
   const userName = useSelector(selectUserName);
   const userPhoto = useSelector(selectUserPhoto);
 
@@ -20,7 +20,7 @@ const Header = (props) => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUser(user);
-        history.push("/home");
+        navigate("/home");
       }
     });
   }, [userName]);
@@ -40,7 +40,7 @@ const Header = (props) => {
         .signOut()
         .then(() => {
           dispatch(setSignOutState());
-          history.push("/");
+          navigate("/");
         })
         .catch((err) => alert(err.message));
     }
@@ -66,7 +66,7 @@ const Header = (props) => {
         <Login onClick={handleAuth}>Login</Login>
       ) : (
         <>
-                    <NavMenu>
+          <NavMenu>
             <a href="/home">
               <img src="/images/home-icon.svg" alt="home" />
               <span>HOME</span>
@@ -211,6 +211,7 @@ const Login = styled.a`
     background-color: #f9f9f9;
     color: #000;
     border-color: transparent;
+    cursor: pointer;
   }
 `;
 
