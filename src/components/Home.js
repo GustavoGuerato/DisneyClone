@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable default-case */
 import styled from "styled-components";
 import ImgSlider from "./ImgSlider";
@@ -15,14 +16,21 @@ import { selectUserName } from "../features/user/userSlice";
 const Home = (props) => {
   const dispatch = useDispatch();
   const userName = useSelector(selectUserName);
-  let recommends = [];
-  let newDisneys = [];
-  let originals = [];
-  let trending = [];
 
   useEffect(() => {
-    db.collection("movies").onSnapshot((snapshot) => {
-      snapshot.docs.map((doc) => {
+    const moviesCollection = db.collection("movies");
+    moviesCollection.get().then((snapshot) => {
+      if (snapshot.empty) {
+        console.log("No movies found in database");
+        return;
+      }
+
+      let recommends = [];
+      let newDisneys = [];
+      let originals = [];
+      let trending = [];
+
+      snapshot.docs.forEach((doc) => {
         switch (doc.data().type) {
           case "recommend":
             recommends.push({ id: doc.id, ...doc.data() });
@@ -36,8 +44,11 @@ const Home = (props) => {
           case "trending":
             trending.push({ id: doc.id, ...doc.data() });
             break;
+          default:
+            console.log(`Invalid movie type: ${doc.data().type}`);
         }
       });
+
       dispatch(
         setMovies({
           recommend: recommends,
@@ -47,7 +58,7 @@ const Home = (props) => {
         })
       );
     });
-  }, [userName]);
+  }, [dispatch, userName]);
 
   return (
     <Container>
