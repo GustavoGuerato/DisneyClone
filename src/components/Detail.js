@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import db from "../firebase";
-import { useParams } from "react-router-dom";
 
 const Detail = (props) => {
   const { id } = useParams();
-  const [detailData, SetDetailData] = useState({});
+  const [detailData, setDetailData] = useState({});
 
   useEffect(() => {
     db.collection("movies")
@@ -13,9 +13,9 @@ const Detail = (props) => {
       .get()
       .then((doc) => {
         if (doc.exists) {
-          SetDetailData(doc.data());
+          setDetailData(doc.data());
         } else {
-          console.log("no such document in our database");
+          console.log("  🔥");
         }
       })
       .catch((error) => {
@@ -35,11 +35,11 @@ const Detail = (props) => {
       <ContentMeta>
         <Controls>
           <Player>
-            <img src="/images/play-icon-black.png" alt="play-button" />
+            <img src="/images/play-icon-black.png" alt="" />
             <span>Play</span>
           </Player>
           <Trailer>
-            <img src="/images/play-icon-white.png" alt="trailer-button" />
+            <img src="/images/play-icon-white.png" alt="" />
             <span>Trailer</span>
           </Trailer>
           <AddList>
@@ -48,11 +48,11 @@ const Detail = (props) => {
           </AddList>
           <GroupWatch>
             <div>
-              <img src="/images/group-icon.png" alt="group-icon" />
+              <img src="/images/group-icon.png" alt="" />
             </div>
           </GroupWatch>
         </Controls>
-        <Subtitle>{detailData.subTitle}</Subtitle>
+        <SubTitle>{detailData.subTitle}</SubTitle>
         <Description>{detailData.description}</Description>
       </ContentMeta>
     </Container>
@@ -61,7 +61,7 @@ const Detail = (props) => {
 
 const Container = styled.div`
   position: relative;
-  min-height: calc(100vh - 250px);
+  min-height: calc(100vh-250px);
   overflow-x: hidden;
   display: block;
   top: 72px;
@@ -72,8 +72,8 @@ const Background = styled.div`
   left: 0px;
   opacity: 0.8;
   position: fixed;
-  right: 0;
-  top: 0;
+  right: 0px;
+  top: 0px;
   z-index: -1;
 
   img {
@@ -92,7 +92,7 @@ const ImageTitle = styled.div`
   -webkit-box-pack: start;
   justify-content: flex-start;
   margin: 0px auto;
-  height: 38vw;
+  height: 30vw;
   min-height: 170px;
   padding-bottom: 24px;
   width: 100%;
@@ -111,25 +111,25 @@ const ContentMeta = styled.div`
 const Controls = styled.div`
   align-items: center;
   display: flex;
-  flew-flow: row nowrap;
+  flex-flow: row nowrap;
   margin: 24px 0px;
   min-height: 56px;
 `;
 
-const Player = styled.div`
+const Player = styled.button`
   font-size: 15px;
-  margin: 0 22px 0 0;
-  padding: 0 24px;
+  margin: 0px 22px 0px 0px;
+  padding: 0px 24px;
   height: 56px;
   border-radius: 4px;
-  align-items: center;
   cursor: pointer;
   display: flex;
+  align-items: center;
   justify-content: center;
   letter-spacing: 1.8px;
   text-align: center;
   text-transform: uppercase;
-  background: rgb(249, 249, 249);
+  background: rgb (249, 249, 249);
   border: none;
   color: rgb(0, 0, 0);
 
@@ -140,6 +140,7 @@ const Player = styled.div`
   &:hover {
     background: rgb(198, 198, 198);
   }
+
   @media (max-width: 768px) {
     height: 45px;
     padding: 0px 12px;
@@ -154,18 +155,18 @@ const Player = styled.div`
 
 const Trailer = styled(Player)`
   background: rgba(0, 0, 0, 0.3);
-  border: 1px; solid rgb(249,249,249)
-  color:rgb(249,249,249)
+  border: 1px solid rgb(249, 249, 249);
+  color: rgb(249, 249, 249);
 `;
 
 const AddList = styled.div`
   margin-right: 16px;
   height: 44px;
   width: 44px;
-  display: center;
+  display: flex;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   border-radius: 50%;
   border: 2px solid white;
   cursor: pointer;
@@ -176,11 +177,11 @@ const AddList = styled.div`
 
     &:first-child {
       height: 2px;
-      transform: translate(1px, 0) rotate(0deg);
+      transform: translate(1px, 0px) rotate(0deg);
       width: 16px;
     }
 
-    &: nth-child(2) {
+    &:nth-child(2) {
       height: 16px;
       transform: translateX(-8px) rotate(0deg);
       width: 2px;
@@ -210,7 +211,7 @@ const GroupWatch = styled.div`
   }
 `;
 
-const Subtitle = styled.div`
+const SubTitle = styled.div`
   color: rgb(249, 249, 249);
   font-size: 15px;
   min-height: 20px;
